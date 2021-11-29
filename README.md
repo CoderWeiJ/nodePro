@@ -112,3 +112,64 @@ app.listen(APP_PORT, () => {
   console.log(`服务器启动，监听${APP_PORT}...`)
 })
 ```
+# 五、目录结构优化
+## 1. 将http服务和app业务拆分
+创建`src/app/index.js`
+```js
+const Koa = require('koa');
+const userRouter = require('../router/user.route.js');
+
+const app = new Koa();
+
+// 中间件
+app
+  .use(userRouter.routes())
+  .use(userRouter.allowedMethods());
+
+module.exports = app;
+```
+改写`app.js`
+```js
+const app = require('./app/index.js');
+const {
+  APP_PORT
+} = require('./config/config.default.js');
+
+app.listen(APP_PORT, () => {
+  console.log(`服务器启动，监听${APP_PORT}...`)
+});
+```
+## 2. 将路由和控制器拆分
+路由：解析URL，分发给控制器对应的方法
+控制器：处理不同的业务
+
+改写`user.route.js`
+```js
+const Router = require('koa-router');
+const {
+  register, login
+} = require('../controller/user.controller.js');
+
+const userRouter = new Router({
+  prefix: '/users'
+});
+// 注册接口
+userRouter.post('/register', register);
+// 登录接口
+userRouter.get('/login', login);
+
+module.exports = userRouter;
+```
+创建`src/controller/user.controller.js`
+```js
+class UserController {
+  async register(ctx, next) {
+    ctx.body = "注册接口";
+  }
+
+  async login(ctx, next) {
+    ctx.body = '登录接口';
+  }
+}
+module.exports = new UserController();
+```
