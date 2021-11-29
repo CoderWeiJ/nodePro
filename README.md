@@ -39,3 +39,35 @@ app.listen(3000, ()=>{
 ```shell
 node ./src/app.js
 ```
+
+# 三、项目的基本优化
+## 1. 自动重启服务
+安装nodemon
+```shell
+npm install nodemon
+```
+编写`package.json`脚本
+```json
+"scripts": {
+  "dev": "nodemon ./src/app.js"
+},
+```
+## 2. 读取配置文件
+安装`dotenv`,读取根目录中的`.env`文件，将配置写在`process.env`中
+```shell
+npm i dotenv
+```
+创建`.env`
+> APP_PORT = 8000
+
+创建`src/config/config.default.js`
+```js
+const dotenv = require('dotenv');
+// 读取.env内容
+dotenv.config();
+module.exports = process.env;
+```
+`app.js`文件使用配置项
+```js
+const {APP_PORT} = require('./config/config.default.js');
+```
