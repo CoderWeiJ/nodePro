@@ -71,3 +71,44 @@ module.exports = process.env;
 ```js
 const {APP_PORT} = require('./config/config.default.js');
 ```
+
+# 四、添加路由
+> 根据不同的URL，调用对应处理函数
+
+## 1. 安装`koa-router`
+```shell
+npm i koa-router
+```
+步骤：
+1. 导入包
+2. 实例化对象
+3. 编写路由
+4. 注册中间件
+```js
+const Koa = require('koa');
+const Router = require('koa-router');
+const {
+  APP_PORT
+} = require('./config/config.default.js');
+// 实例化对象
+const app = new Koa();
+const router = new Router();
+
+// 路由匹配
+// GET请求
+router.get('/', (ctx, next) => {
+  ctx.body = '首页';
+});
+router.get('/hello', (ctx, next) => {
+  ctx.body = 'hello页面';
+});
+
+// 中间件
+app
+  .use(router.routes())
+  .use(router.allowedMethods());
+  
+app.listen(APP_PORT, () => {
+  console.log(`服务器启动，监听${APP_PORT}...`)
+})
+```
