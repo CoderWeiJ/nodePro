@@ -173,3 +173,45 @@ class UserController {
 }
 module.exports = new UserController();
 ```
+
+# 六、解析body
+## 1. 安装`koa-body`
+## 2. 注册中间件
+改写`app/index.js`
+
+![image-20211204155808770](https://tuchuang-1257620510.cos.ap-guangzhou.myqcloud.com/202112041558816.png)
+
+## 3. 解析请求
+改写`controller/user.controller.js`
+```js
+const { createUser } = require('../service/user.service.js');
+class UserController {
+  async register(ctx, next) {
+    // 1. 提取数据
+    let { user_name, password } = ctx.request.body;
+    // 2. 操作数据库
+    await createUser(user_name, password);
+    // 3. 返回结果
+    ctx.body = ctx.request.body;
+  }
+
+  async login(ctx, next) {
+    ctx.body = '登录接口';
+  }
+}
+
+module.exports = new UserController();
+```
+
+## 4. 拆分service层
+service层主要做一个数据库处理
+创建`service/user.service.js`
+```js
+class UserService {
+    async createUser(user_name, password) {
+        todo: 写入数据库
+    }
+}
+
+module.exports = new UserService();
+```
