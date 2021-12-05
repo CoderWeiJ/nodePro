@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db/sequelize.js');
 
+// User模型
 const User = sequelize.define('zd_user', {
     // 在这里定义模型属性
     user_name: {
@@ -27,7 +28,7 @@ const User = sequelize.define('zd_user', {
     // tableName: 'zd_user', // 直接给出表名
     freezeTableName: true, // 表明推断，将模型名称强制推断为表名：zd_user -> zd_user；不加就是zd_user -> zd_users  
 });
-User.sync({ force: true }) // 强制同步数据库(将创建表,如果表已经存在,则将其首先删除)
+// User.sync({ force: true }) // 强制同步数据库(将创建表,如果表已经存在,则将其首先删除)
 module.exports = User;
 // `sequelize.define` 会返回模型
 // console.log(User === sequelize.models.User); // true
