@@ -22,7 +22,6 @@ class UserService {
             attributes: ['id', 'user_name', 'password', 'is_admin'], // 查询字段名
             where: whereObj, // 查询条件
         });
-        console.log("select结果：", res);
         return res ? res.dataValues : null;
     }
 }

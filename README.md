@@ -375,3 +375,24 @@ module.exports = new UserService();
 写在九里面了
 
 # 十一、拆分中间件
+
+# 十二、密码加密
+## 1. 下载`bcryptjs`
+```shell
+npm i bcryptjs
+```
+## 2. 注册中间件
+修改`middleware/user.middleware.js`
+```js
+async function bcryptPassword(ctx, next) {
+    const { password } = ctx.request.body;
+    const salt = bcrypt.genSaltSync(10); // 加密
+    // hash为密文
+    const hash = bcrypt.hashSync(password, salt);
+    ctx.request.body.password = hash;
+    await next();
+}
+```
+
+
+

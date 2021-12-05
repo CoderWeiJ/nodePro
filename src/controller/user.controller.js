@@ -1,9 +1,10 @@
-const { createUser, getUserInfo } = require('../service/user.service.js');
+const { createUser } = require('../service/user.service.js');
 const { userRegisterError } = require('../constant/err.type.js');
 
 class UserController {
   async register(ctx, next) {
-    const { user_name, password } = ctx.body;
+    const { user_name, password } = ctx.request.body;
+    // 捕获异常
     try {
       let res = await createUser(user_name, password);
       ctx.body = {
