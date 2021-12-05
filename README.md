@@ -296,3 +296,82 @@ module.exports = User;
 
 
 
+
+# 九、添加用户入库
+## 1. 修改service层
+实现`service/user.service.js`具体功能
+```js
+const User = require('../model/user.model.js')
+class UserService {
+    async createUser(user_name, password) {
+        // 添加user表的记录
+        const res = await User.create({
+            user_name,
+            password
+        });
+        return res;
+    }
+
+    async getUserInfo({ id, user_name, password, is_admin }) {
+        const whereObj = {};
+        // 查询条件
+        id && Object.assign(whereObj, { id });
+        user_name && Object.assign(whereObj, { user_name });
+        password && Object.assign(whereObj, { password });
+        is_admin && Object.assign(whereObj, { is_admin });
+
+        // 查询
+        const res = await User.findOne({
+            attributes: ['id', 'user_name', 'password', 'is_admin'], // 查询字段名
+            where: whereObj, // 查询条件
+        });
+        console.log("select结果：", res);
+        return res ? res.dataValues : null;
+    }
+}
+
+module.exports = new UserService();
+```
+
+## 2. 修改model层
+修改``model/user.model.js``的register方法
+```js
+  async register(ctx, next) {
+    // 1. 提取数据
+    let { user_name, password } = ctx.request.body;
+    // 2. 操作数据库
+    // 返回信息
+    if (!user_name || !password) { // 用户名或密码为空的情况
+      console.error('用户名或密码为空', ctx.request.body);
+      ctx.status = 400; // 返回400状态码
+      ctx.body = {
+        code: '10001',
+        message: '用户名或密码为空',
+        result: ''
+      }
+      return; // 直接返回
+    } else if (await getUserInfo({ user_name })) { // 数据库查询，用户名已被注册
+      console.log('打印这里：', getUserInfo({ user_name }));
+      ctx.status = 409; // 资源冲突
+      ctx.body = {
+        code: '10002',
+        message: '用户名已存在',
+        result: ''
+      }
+      return;
+    } else {
+      let res = await createUser(user_name, password);
+      ctx.body = {
+        code: '10000',
+        message: '注册成功！',
+        result: res
+      }
+    }
+  }
+```
+
+
+# 十，错误处理
+写在九里面了
+
+# 十一、拆分中间件
