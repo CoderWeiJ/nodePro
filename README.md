@@ -215,3 +215,84 @@ class UserService {
 
 module.exports = new UserService();
 ```
+
+# 七、操作数据库
+`sequelize` `ORM数据库工具`
+ORM: 对象关系映射
+  - 数据表映射(对应)一个类
+  - 数据表中的数据行(记录)对应一个对象
+  - 数据表字段对应对象的属性
+  - 数据表的操作对应数据表的方法
+## 1. 安装`sequelize`
+```shell
+npm i --save sequelize mysql2
+```
+## 2. 创建数据库连接对象
+创建`db/sequelize.js`
+```js
+const { Sequelize } = require('sequelize');
+const {
+    MYSQL_DB,
+    MYSQL_PORT,
+    MYSQL_USER,
+    MYSQL_PASSWORD,
+    MYSQL_HOST
+} = require('../config/config.default.js');
+// 分别传递参数 (其它数据库)
+const sequelize = new Sequelize(MYSQL_DB, MYSQL_USER, MYSQL_PASSWORD, {
+    host: MYSQL_HOST,
+    port: MYSQL_PORT,
+    dialect: 'mysql' /* 选择 'mysql' | 'mariadb' | 'postgres' | 'mssql' 其一 */
+});
+module.exports = sequelize;
+// 测试数据库连接
+// sequelize.authenticate().then(res => {
+//     console.log('数据表连接成功！');
+// }).catch(err => {
+//     console.log("数据表连接失败：", err);
+// })
+```
+
+
+# 八、创建User模型
+## 1. 拆分model层
+sequelize主要通过`model`对应数据表
+创建`src/model/user.model.js`
+```js
+const { DataTypes } = require('sequelize');
+const sequelize = require('../db/sequelize.js');
+
+const User = sequelize.define('zd_user', {
+    // 在这里定义模型属性
+    user_name: {
+        // id不用自己创建，sequelize会自动创建并管理
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        comment: '用户名，唯一'
+    },
+    password: {
+        type: DataTypes.CHAR(64),
+        allowNull: false,
+        // allowNull 默认为 true
+        comment: '密码',
+    },
+    is_admin: {
+        type: DataTypes.BOOLEAN, // 相当于 TINYINT(1)
+        allowNull: false,
+        defaultValue: 0,
+        comment: '0 普通用户; 1 管理员'
+    }
+}, {
+    // 这是其他模型参数
+    // tableName: 'zd_user', // 直接给出表名
+    freezeTableName: true, // 表明推断，将模型名称强制推断为表名：zd_user -> zd_user；不加就是zd_user -> zd_users  
+});
+User.sync({ force: true }) // 强制同步数据库(将创建表,如果表已经存在,则将其首先删除)
+module.exports = User;
+// `sequelize.define` 会返回模型
+// console.log(User === sequelize.models.User); // true
+```
+
+
+
