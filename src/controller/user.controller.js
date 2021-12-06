@@ -22,7 +22,8 @@ class UserController {
   }
 
   async login(ctx, next) {
-    ctx.body = '登录接口';
+    const { user_name } = ctx.request.body;
+    ctx.body = `登陆成功！${user_name}，欢迎您！`;
   }
 }
 

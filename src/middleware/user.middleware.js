@@ -1,5 +1,5 @@
 const { getUserInfo } = require('../service/user.service.js');
-const { userFormatError, userAlreadyExisted, userRegisterError } = require('../constant/err.type.js'); // 异常类型
+const { userFormatError, userAlreadyExisted, userRegisterError, userNotExist, userLoginError, invaildPassword } = require('../constant/err.type.js'); // 异常类型
 const bcrypt = require('bcryptjs');
 
 // 验证用户名或密码是否为空
@@ -17,7 +17,7 @@ async function userValidator(ctx, next) {
 
 }
 // 验证用户名是否存在
-async function verfiyUser(ctx, next) {
+async function verifyUser(ctx, next) {
     const { user_name } = ctx.request.body;
     try {
         if (await getUserInfo({ user_name })) { // 数据库查询，用户名已被注册
@@ -42,5 +42,31 @@ async function bcryptPassword(ctx, next) {
     await next();
 }
 
+// 验证login
+async function verifyLogin(ctx, next) {
+    const { user_name, password } = ctx.request.body;
+    try {
+        console.log(user_name);
+        const res = await getUserInfo({ user_name });
 
-module.exports = { userValidator, verfiyUser, bcryptPassword }
+        console.log('匹配结果', res);
+        // 1. 查询用户名是否存在数据库
+        if (!res) {
+            console.error('用户名不存在！', { user_name });
+            ctx.app.emit('error', userNotExist, ctx);
+            return;
+        }
+        // 2. 密码匹配
+        if (!bcrypt.compareSync(password, res.password)) {
+            console.error('密码错误');
+            ctx.app.emit('error', invaildPassword, ctx);
+            return;
+        }
+        await next();
+    } catch (err) {
+        console.error('用户登录失败！', err);
+        ctx.app.emit('error', userLoginError, ctx);
+    }
+}
+
+module.exports = { userValidator, verifyUser, bcryptPassword, verifyLogin }
