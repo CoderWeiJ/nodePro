@@ -394,5 +394,44 @@ async function bcryptPassword(ctx, next) {
 }
 ```
 
-# 十三、
+# 十三、登录验证
+## 1. 添加中间件
+```js
+async function verifyLogin(ctx, next) {
+    const { user_name, password } = ctx.request.body;
+    try {
+        console.log(user_name);
+        const res = await getUserInfo({ user_name });
 
+        console.log('匹配结果', res);
+        // 1. 查询用户名是否存在数据库
+        if (!res) {
+            console.error('用户名不存在！', { user_name });
+            ctx.app.emit('error', userNotExist, ctx);
+            return;
+        }
+        // 2. 密码匹配
+        if (!bcrypt.compareSync(password, res.password)) {
+            console.error('密码错误');
+            ctx.app.emit('error', invaildPassword, ctx);
+            return;
+        }
+        await next();
+    } catch (err) {
+        console.error('用户登录失败！', err);
+        ctx.app.emit('error', userLoginError, ctx);
+    }
+}
+```
+
+
+# 十四、颁发token
+登录成功后，给用户颁发一个令牌`token`，用户在以后的每一次请求中携带这个令牌。
+jwt: jsonwebtoken
+- header: 头部
+- playload: 载荷
+- signature: 签名
+## 1. 安装`jsonwebtoken`
+```shell
+npm i jsonwebtoken
+```

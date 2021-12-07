@@ -1,6 +1,7 @@
-const { createUser } = require('../service/user.service.js');
+const { createUser, getUserInfo } = require('../service/user.service.js');
 const { userRegisterError } = require('../constant/err.type.js');
-
+const { JWT_SECRET } = require('../config/config.default.js');
+const jwt = require('jsonwebtoken');
 class UserController {
   async register(ctx, next) {
     const { user_name, password } = ctx.request.body;
@@ -23,7 +24,19 @@ class UserController {
 
   async login(ctx, next) {
     const { user_name } = ctx.request.body;
-    ctx.body = `登陆成功！${user_name}，欢迎您！`;
+    // 1. 获取用户信息(在token的playload中，记录id, user_name, is_admin)
+    try {
+      // 除了password字段，其他字段赋值给res对象
+      const { password, ...res } = await getUserInfo({ user_name });
+      ctx.body = {
+        code: '0',
+        message: '登录成功！',
+        res: jwt.sign(res, JWT_SECRET, { expiresIn: '1d' }), // 1d：过期时间：1天
+      };
+    } catch (err) {
+
+    }
+
   }
 }
 
