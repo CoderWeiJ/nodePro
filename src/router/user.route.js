@@ -13,6 +13,7 @@ const {
 const {
   auth
 } = require('../middleware/auth.middleware.js');
+
 const userRouter = new Router({
   prefix: '/users'
 });
