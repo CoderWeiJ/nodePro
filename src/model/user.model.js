@@ -29,6 +29,7 @@ const User = sequelize.define('zd_user', {
     freezeTableName: true, // 表明推断，将模型名称强制推断为表名：zd_user -> zd_user；不加就是zd_user -> zd_users  
 });
 // User.sync({ force: true }) // 强制同步数据库(将创建表,如果表已经存在,则将其首先删除)
+User.sync(); // 如果表不存在，则创建表；存在则不操作
 module.exports = User;
 // `sequelize.define` 会返回模型
 // console.log(User === sequelize.models.User); // true
