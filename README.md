@@ -486,3 +486,22 @@ module.exports = {
 userRouter.patch('/', auth, bcryptPassword, changePassword);
 ```
 
+# 十七、路由动态加载
+## 1. 新增index.js
+新建``router/index.js``，管理所有路由，对外暴露一个路由
+```js
+const fs = require('fs');
+const Router = require('koa-router');
+
+const router = new Router();
+
+fs.readdirSync(__dirname).forEach(file => {
+  if (file !== 'index.js') {
+    let r = require('./' + file);
+    router.use(r.routes())
+  }
+});
+
+module.exports = router;
+```
+

@@ -1,11 +1,12 @@
 const fs = require('fs');
-const router = require('koa-router');
+const Router = require('koa-router');
+
+const router = new Router();
 
 fs.readdirSync(__dirname).forEach(file => {
   // console.log(file);
-  if(file !== 'index.js') {
+  if (file !== 'index.js') {
     let r = require('./' + file);
-    console.log(r);
     router.use(r.routes())
   }
 });
