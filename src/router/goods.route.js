@@ -1,8 +1,16 @@
 const Router = require('koa-router');
-const { upload } = require('../controller/goods.controller.js');
+const {
+  auth,
+  hadAdminPermission
+} = require('../middleware/auth.middleware.js');
+const {
+  upload
+} = require('../controller/goods.controller.js');
 
-const router = new Router({ prefix: '/goods' });
+const router = new Router({
+  prefix: '/goods'
+});
 
-router.post('/upload', upload);
+router.post('/upload', auth, hadAdminPermission, upload);
 
 module.exports = router;

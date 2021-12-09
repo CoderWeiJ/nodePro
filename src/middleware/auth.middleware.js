@@ -4,7 +4,8 @@ const {
 } = require('../config/config.default.js');
 const {
   TokenExpiredError,
-  invaildToken
+  invaildToken,
+  hasNotAdminPermission
 } = require('../constant/err.type.js');
 
 // token验证
@@ -33,6 +34,20 @@ async function auth(ctx, next) {
   await next();
 }
 
+// 判断用户是否有管理员权限
+async function hadAdminPermission(ctx, next) {
+  const {
+    is_admin
+  } = ctx.state.user;
+
+  if (!is_admin) {
+    console.error('该用户没有管理员权限', ctx.state.user);
+    return ctx.app.emit('error', hasNotAdminPermission, ctx)
+  }
+  await next();
+}
+
 module.exports = {
-  auth
+  auth,
+  hadAdminPermission
 };

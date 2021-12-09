@@ -501,7 +501,31 @@ fs.readdirSync(__dirname).forEach(file => {
     router.use(r.routes())
   }
 });
-
 module.exports = router;
 ```
+## 2. 修改``src/app/index.js``
+```js
+const router = require('../router/index.js');
+```
+# 十八、管理员权限验证
+## 1. 添加中间件
+``auth.middleware.js``新增验证功能
+```js
+// 判断用户是否有管理员权限
+async function hadAdminPermission(ctx, next) {
+  const {
+    is_admin
+  } = ctx.state.user;
 
+  if (!is_admin) {
+    console.error('该用户没有管理员权限', ctx.state.user);
+    return ctx.app.emit('error', hasNotAdminPermission, ctx);
+  }
+  await next();
+}
+```
+
+## 2. 修改`goods.router.js``
+```js
+router.post('/upload', auth, hadAdminPermission, upload);
+```
