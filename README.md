@@ -525,7 +525,7 @@ async function hadAdminPermission(ctx, next) {
 }
 ```
 
-## 2. 修改`goods.router.js``
+## 2. 修改`goods.route.js``
 ```js
 router.post('/upload', auth, hadAdminPermission, upload);
 ```

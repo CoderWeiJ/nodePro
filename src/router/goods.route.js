@@ -1,7 +1,8 @@
 const Router = require('koa-router');
 const {
   auth,
-  hadAdminPermission
+  hadAdminPermission,
+  verifyFileType
 } = require('../middleware/auth.middleware.js');
 const {
   upload

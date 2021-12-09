@@ -41,9 +41,21 @@ module.exports = {
     message: '无效的token',
     result: ''
   },
-  hasNotAdminPermission : {
+  hasNotAdminPermission: {
     code: '10103',
     message: '没有管理员权限',
+    result: ''
+  },
+  // 商品
+  fileUploadError: {
+    code: '10201',
+    message: '商品图片上传失败',
+    result: ''
+  },
+  // 无效的文件类型
+  unSupportedFileType: {
+    code: '10202',
+    message: '不支持的文件类型',
     result: ''
   }
 }
