@@ -524,8 +524,55 @@ async function hadAdminPermission(ctx, next) {
   await next();
 }
 ```
-
 ## 2. 修改`goods.route.js``
 ```js
 router.post('/upload', auth, hadAdminPermission, upload);
 ```
+
+# 十九、图片上传(类型判断)
+## 1. 添加koa-body参数
+修改``app/index.js``
+```js
+KoaBody({
+    multipart: true, // 支持多文件上传
+    formidable: {
+      // 在配置选项里，不推荐使用相对路径
+      // 在Options里的相对路径，不是相对当前文件的路径，而是相对process.cwd() => 执行脚本的路径
+      uploadDir: path.join(__dirname, '../uploads'), // 上传路径
+      keepExtensions: true, // 保留扩展名
+    }
+  })
+```
+## 2. 文件类型判断
+``src/controller/goods.controller.js``
+```js
+async upload(ctx, next) {
+    // 上传的文件会保留在 ctx.request.files
+    const {
+      file
+    } = ctx.request.files
+    if (file) {
+      const fileTypes = ['image/png', 'image/jpeg'];
+      if (!fileTypes.includes(file.type)) {
+        ctx.body = unSupportedFileType;
+        return ctx.app.emit('error', unSupportedFileType, ctx);
+      }
+      // console.log('file类型：', file.type);
+      ctx.body = {
+        code: '0',
+        message: '图片上传成功！',
+        result: {
+          goods_img: path.basename(file.path)
+        }
+      };
+    } else {
+      ctx.body = fileUploadError;
+      return ctx.app.emit('error', fileUploadError, ctx);
+    }
+  }
+```
+## 3. 待完善功能
+> 尽管增加了类型判断，但即使返回文件上传失败的信息，文件还是会被上传到服务器
+> 后面可以加个中间件，提示：formidable。但是formidable是在koa-body参数里，目前不知道怎么做
+
+
