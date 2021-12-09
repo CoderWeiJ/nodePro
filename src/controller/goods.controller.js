@@ -1,13 +1,16 @@
 const path = require('path');
 
 const {
-  createGoods
+  createGoods,
+  updateGoods
 } = require('../service/goods.service.js');
 const {
   fileUploadError,
   unSupportedFileType,
-  publishGoodsError
+  publishGoodsError,
+  invaildGoodsId
 } = require('../constant/err.type.js');
+
 class GoodsController {
   async upload(ctx, next) {
     // 上传的文件会保留在 ctx.request.files
@@ -32,7 +35,7 @@ class GoodsController {
     }
   }
 
-  async create(ctx) {
+  async create(ctx, next) {
     // 直接调用service的createGoods
     try {
       const res = await createGoods(ctx.request.body);
@@ -44,6 +47,23 @@ class GoodsController {
     } catch (err) {
       console.error(err);
       return ctx.app.emit('error', publishGoodsError, ctx);
+    }
+  }
+
+  async update(ctx, next) {
+    try {
+      const res = await updateGoods(ctx.params.id, ctx.request.body);
+      if (res) {
+        ctx.body = {
+          code: '0',
+          message: '商品信息修改成功',
+          result: ''
+        }
+      } else {
+        return ctx.app.emit('商品信息修改失败', invaildGoodsId, ctx);
+      }
+    } catch (err) {
+      console.error(err);
     }
   }
 }
