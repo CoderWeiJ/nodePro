@@ -4,7 +4,8 @@ const {
   createGoods,
   updateGoods,
   removeGoods,
-  restoreGoods
+  restoreGoods,
+  findGoods
 } = require('../service/goods.service.js');
 const {
   fileUploadError,
@@ -94,6 +95,21 @@ class GoodsController {
       }
     } else {
       return ctx.app.emit('error', invaildGoodsId, ctx);
+    }
+  }
+
+  // 获取商品列表
+  async findAll(ctx, next) {
+    // 1. 解析参数
+    const { pageNum = 1, pageSize = 10 } = ctx.request.body;
+    // 2. 获取数据
+    const res = await findGoods(pageNum, pageSize);
+    if (res) {
+      ctx.body = {
+        code: '0',
+        message: '获取商品列表成功',
+        result: res
+      }
     }
   }
 }

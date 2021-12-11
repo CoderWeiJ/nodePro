@@ -15,7 +15,8 @@ const {
   create,
   update,
   remove,
-  restore
+  restore,
+  findAll
 } = require('../controller/goods.controller.js');
 const router = new Router({
   prefix: '/goods'
@@ -35,4 +36,8 @@ router.put('/update/:id', auth, hadAdminPermission, validator, update)
 router.post('/:id/off', auth, hadAdminPermission, remove);
 // 商品上架
 router.post('/:id/on', auth, hadAdminPermission, restore);
+
+// 获取商品列表
+router.get('/', auth, hadAdminPermission, findAll);
+
 module.exports = router;
