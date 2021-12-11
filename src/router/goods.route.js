@@ -10,9 +10,10 @@ const {
 } = require('../middleware/auth.middleware.js');
 const {
   upload,
-  create
+  create,
+  update,
+  remove
 } = require('../controller/goods.controller.js');
-
 const router = new Router({
   prefix: '/goods'
 });
@@ -21,5 +22,7 @@ const router = new Router({
 router.post('/upload', auth, hadAdminPermission, upload);
 // 发布商品接口
 router.post('/', auth, hadAdminPermission, validator, create);
-
+// 商品信息修改
+router.put('/update/:id', auth, hadAdminPermission, validator, update)
+router.delete('/delete/:id', auth, hadAdminPermission, remove);
 module.exports = router;

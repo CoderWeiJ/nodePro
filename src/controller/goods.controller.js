@@ -2,7 +2,8 @@ const path = require('path');
 
 const {
   createGoods,
-  updateGoods
+  updateGoods,
+  removeGoods
 } = require('../service/goods.service.js');
 const {
   fileUploadError,
@@ -22,7 +23,7 @@ class GoodsController {
       if (!fileTypes.includes(file.type)) {
         return ctx.app.emit('error', unSupportedFileType, ctx);
       }
-      // console.log('file类型：', file.type);
+
       ctx.body = {
         code: '0',
         message: '图片上传成功！',
@@ -64,6 +65,20 @@ class GoodsController {
       }
     } catch (err) {
       console.error(err);
+    }
+  }
+
+  async remove(ctx, next) {
+    const res = await removeGoods(ctx.params.id);
+    console.log(res);
+    if (res > 0) {
+      ctx.body = {
+        code: '0',
+        message: '商品删除成功',
+        result: ''
+      }
+    } else {
+      return ctx.app.emit('error', '删除失败！', ctx);
     }
   }
 }
