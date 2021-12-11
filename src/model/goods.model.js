@@ -22,6 +22,9 @@ const Goods = sequelize.define('zd_goods', {
     allowNull: false,
     comment: '商品图片'
   }
+}, {
+  paranoid: true
 });
+// Goods.sync({ force: true });
 Goods.sync();
 module.exports = Goods;

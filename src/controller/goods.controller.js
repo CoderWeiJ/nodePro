@@ -3,7 +3,8 @@ const path = require('path');
 const {
   createGoods,
   updateGoods,
-  removeGoods
+  removeGoods,
+  restoreGoods
 } = require('../service/goods.service.js');
 const {
   fileUploadError,
@@ -74,11 +75,25 @@ class GoodsController {
     if (res > 0) {
       ctx.body = {
         code: '0',
-        message: '商品删除成功',
+        message: '商品下架成功',
         result: ''
       }
     } else {
-      return ctx.app.emit('error', '删除失败！', ctx);
+      return ctx.app.emit('error', invaildGoodsId, ctx);
+    }
+  }
+
+  // 商品上架
+  async restore(ctx, next) {
+    const res = await restoreGoods(ctx.params.id);
+    if (res > 0) {
+      ctx.body = {
+        code: '0',
+        message: '商品上架成功',
+        result: ''
+      }
+    } else {
+      return ctx.app.emit('error', invaildGoodsId, ctx);
     }
   }
 }
