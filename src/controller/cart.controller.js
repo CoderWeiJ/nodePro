@@ -1,5 +1,6 @@
 
-const { createOrUpdate, findCarts } = require('../service/cart.service.js');
+const { cartFormatError } = require('../constant/err.type.js');
+const { createOrUpdate, findCarts, updateCarts } = require('../service/cart.service.js');
 class CartController {
 
     // 添加购物车
@@ -28,6 +29,25 @@ class CartController {
             code: '0',
             message: '获取购物车列表成功',
             result: res,
+        }
+    }
+
+    // 更新购物车
+    async update(ctx, next) {
+        // 1. 解析参数
+        const { id } = ctx.request.params;
+        const { number, selected } = ctx.request.body;
+        if (number == null && selected == null) {
+            cartFormatError.message = 'number和selected不能同时为空';
+            return ctx.app.emit('error', cartFormatError, ctx);
+        }
+        // 2. 操作数据库
+        const res = await updateCarts({ id, number, selected });
+        // 3. 返回数据
+        ctx.body = {
+            code: '0',
+            message: '更新购物车成功',
+            result: res
         }
     }
 

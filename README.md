@@ -630,3 +630,32 @@ async upload(ctx, next) {
         }
     }
 ```
+
+# 二十八、更新购物车
+
+## 1. 更改`/middlerware/cart.middlerware.js``
+```js
+// 使用闭包
+function validator(rules) { // ctx, next
+    return async function (ctx, next) {
+        try {
+            ctx.verifyParams(rules);
+        } catch (err) {
+            console.error(err);
+            cartFormatError.result = err;
+            return ctx.app.emit('error', cartFormatError, ctx);
+        }
+        await next();
+    }
+}
+```
+
+## 2. ``router/cart.router.js``新增更新购物车方法
+
+```js
+// 更新购物车
+router.patch('/:id', auth, validator({
+    number: { type: 'number', required: false },
+    selected: { type: 'bool', required: false }
+}), update);
+```

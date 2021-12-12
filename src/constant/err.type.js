@@ -82,6 +82,11 @@ module.exports = {
     code: '10206',
     message: '商品已下架或不存在',
     result: ''
+  },
+  // 购物车模块
+  cartFormatError: {
+    code: '10301',
+    message: '购物车参数格式错误',
+    result: ''
   }
-
 }

@@ -56,6 +56,17 @@ class CartService {
             list: rows
         }
     }
+
+    async updateCarts(params) {
+        const { id, number, selected } = params;
+        // 根据id查找
+        const res = await Cart.findOne({ attributes: ['id', 'goods_id', 'user_id', 'number', 'selected'], where: { id } });
+        console.log('res', res);
+        if (!res) return;
+        number != null ? (res.number = number) : '';
+        selected != null ? (res.selected = selected) : '';
+        return await res.save(); // 保存并返回数据
+    }
 }
 
 module.exports = new CartService();
