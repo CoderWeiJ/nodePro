@@ -39,16 +39,15 @@ class GoodsService {
     // // 偏移量
     const offset = (pageNum - 1) * pageSize;
     // const rows = await Goods.findAll({ offset, limit: pageSize * 1, attributes: ['id', 'goods_name', 'goods_price', 'goods_num', 'goods_img'] });
-    const { total, rows } = await Goods.findAndCountAll({
+    const { count, rows } = await Goods.findAndCountAll({
       offset,
       limit: pageSize * 1,
       attributes: ['id', 'goods_name', 'goods_price', 'goods_num', 'goods_img']
     })
-    console.log(`total:${total}, rows:${rows}`);
     return {
       pageNum,
       pageSize,
-      total,
+      total: count,
       list: rows
     }
   }

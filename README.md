@@ -600,3 +600,33 @@ async upload(ctx, next) {
 - 验证user_id
   - 验证`goods_id`，如果不存在，则创建一条记录；如果存在，则购物车表的记录，更新数量+1
 - 判断用户和商品是否存在
+
+# 二十七、获取购物车列表数据
+# 1. 新增Cart表和Good表的关联
+
+![image-20211212160540913](https://tuchuang-1257620510.cos.ap-guangzhou.myqcloud.com/202112121605991.png)
+
+## 2. 新增查询方法
+修改``service/cart.service.js``
+```js
+// 获取购物车列表数据 分页查询
+    async findCarts(pageNum, pageSize) {
+        const offset = (pageNum - 1) * pageSize;
+        const { count, rows } = await Cart.findAndCountAll({
+            attributes: ['id', 'number', 'selected'],
+            offset,
+            limit: pageSize * 1,
+            include: {
+                attributes: ['id', 'goods_name', 'goods_price', 'goods_img'],
+                model: Goods,
+                as: 'goods_info'
+            }
+        });
+        return {
+            pageNum,
+            pageSize,
+            total: count,
+            list: rows
+        }
+    }
+```

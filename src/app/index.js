@@ -25,24 +25,6 @@ app
       // 在Options里的相对路径，不是相对当前文件的路径，而是相对process.cwd() => 执行脚本的路径
       uploadDir: path.join(__dirname, '../uploads'), // 上传路径
       keepExtensions: true, // 保留扩展名
-      // onFileBegin: function (name, file) {
-      //   try {
-      //     const {
-      //       type
-      //     } = file;
-      //     if (!type) {
-      //       console.error('上传文件为空');
-      //     } else {
-      //       const fileTypes = ['image/png', 'image/jpeg'];
-      //       if (!fileTypes.includes(type)) {
-      //         throw Error('不支持的文件类型');
-      //       }
-      //     }
-      //   } catch (err) {
-      //     console.error(err);
-      //     return;
-      //   }
-      // }
     }
   }))
   .use(parameter(app))
