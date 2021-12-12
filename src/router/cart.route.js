@@ -6,7 +6,7 @@ const Router = require('koa-router');
 const { auth } = require('../middleware/auth.middleware.js');
 const { validator, verifyParams } = require('../middleware/cart.middleware.js')
 // 控制器
-const { add, findAll, update } = require('../controller/cart.controller.js');
+const { add, findAll, update, remove } = require('../controller/cart.controller.js');
 const { verify } = require('jsonwebtoken');
 const { route } = require('./user.route.js');
 const router = new Router({ prefix: '/carts' });
@@ -24,5 +24,7 @@ router.patch('/:id', auth, validator({
     number: { type: 'number', required: false },
     selected: { type: 'bool', required: false }
 }), update);
+
+router.delete('/', auth, validator({ ids: 'array' }), remove)
 
 module.exports = router;

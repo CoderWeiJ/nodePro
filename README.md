@@ -659,3 +659,4 @@ router.patch('/:id', auth, validator({
     selected: { type: 'bool', required: false }
 }), update);
 ```
+

@@ -67,6 +67,16 @@ class CartService {
         selected != null ? (res.selected = selected) : '';
         return await res.save(); // 保存并返回数据
     }
+
+    async removeCarts(ids) {
+        return await Cart.destroy({
+            where: {
+                id: {
+                    [Op.in]: ids
+                }
+            }
+        })
+    }
 }
 
 module.exports = new CartService();

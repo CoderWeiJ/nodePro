@@ -24,8 +24,9 @@ app
       // 在配置选项里，不推荐使用相对路径
       // 在Options里的相对路径，不是相对当前文件的路径，而是相对process.cwd() => 执行脚本的路径
       uploadDir: path.join(__dirname, '../uploads'), // 上传路径
-      keepExtensions: true, // 保留扩展名
-    }
+      keepExtensions: true, // 保留扩展名      
+    },
+    parsedMethods: ['POST', 'PUT', 'PATCH', 'DELETE'],
   }))
   .use(parameter(app))
   .use(KoaStatic(path.join(__dirname, '../uploads'))) // 静态资源请求路径 localhost:8000/uploads/文件名
