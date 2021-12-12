@@ -14,7 +14,6 @@ async function auth(ctx, next) {
     authorization = ''
   } = ctx.request.header;
   const token = authorization.replace('Bearer ', ''); // 获取token
-  console.log('解析出的token: ', token);
   try {
     //user中包含了payload的信息(id, user_name, is_admin)
     const user = jwt.verify(token, JWT_SECRET);

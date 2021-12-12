@@ -64,7 +64,7 @@ class UserService {
     const res = await User.update(newUser, {
       where: whereOpt
     });
-    console.log("更新结果：", res);
+    return res[0] > 0 ? true : false;
   }
 }
 

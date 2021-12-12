@@ -576,3 +576,27 @@ async upload(ctx, next) {
 > 后面可以加个中间件，提示：formidable。但是formidable是在koa-body参数里，目前不知道怎么做
 
 
+# 二十、商品参数校验
+
+# 二十一、商品入库功能
+
+# 二十二、商品信息修改功能
+
+# 二十三、商品删除功能
+
+# 二十四、商品下架功能
+
+# 二十五、获取商品列表
+
+# 二十六、加入购物车模块
+
+## 1. 新增`model/cart.model.js`
+
+## 2. 新增`controller/cart.controller.js`
+
+## 3. 新增`router/car.route.js`
+
+## 4. 接口细节
+- 验证user_id
+  - 验证`goods_id`，如果不存在，则创建一条记录；如果存在，则购物车表的记录，更新数量+1
+- 判断用户和商品是否存在

@@ -46,6 +46,11 @@ module.exports = {
     message: '没有管理员权限',
     result: ''
   },
+  changePasswordError: {
+    code: '10104',
+    message: '密码修改失败',
+    result: ''
+  },
   // 商品
   fileUploadError: {
     code: '10201',
@@ -72,5 +77,11 @@ module.exports = {
     code: '10205',
     message: '无效的商品id',
     result: ''
+  },
+  GoodsNotExisted: {
+    code: '10206',
+    message: '商品已下架或不存在',
+    result: ''
   }
+
 }

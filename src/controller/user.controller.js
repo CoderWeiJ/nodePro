@@ -4,7 +4,8 @@ const {
   updateById
 } = require('../service/user.service.js');
 const {
-  userRegisterError
+  userRegisterError,
+  changePasswordError
 } = require('../constant/err.type.js');
 const {
   JWT_SECRET
@@ -60,14 +61,26 @@ class UserController {
 
   async changePassword(ctx, next) {
     // 1. 获取数据
-    const id = ctx.state.user.id;
+    const { id, user_name } = ctx.state.user;
     const password = ctx.request.body.password; // 加密后的新密码
     // 2. 操作数据库
-    await updateById({
+    const res = await updateById({
       id,
       password
     });
     // 3. 返回结果
+    if (res) {
+      ctx.body = {
+        code: '0',
+        message: '密码修改成功',
+        result: {
+          id,
+          user_name
+        }
+      }
+    } else {
+      return ctx.app.emit('error', changePasswordError, ctx);
+    }
   }
 }
 

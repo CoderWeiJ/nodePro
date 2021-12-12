@@ -1,8 +1,15 @@
 const Goods = require('../model/goods.model.js');
 class GoodsService {
+  // 创建商品记录
   async createGoods(goods) {
     const res = await Goods.create(goods);
     return res.dataValues;
+  }
+  // 查询某条商品记录
+  async findGoodById(id) {
+    // 这里不包含被软删除的数据
+    const res = await Goods.findOne({ where: { id } });
+    return res ? res.dataValues : null;
   }
 
   // 更新商品数据
