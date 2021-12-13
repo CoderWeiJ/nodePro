@@ -55,7 +55,7 @@ class GoodsController {
 
   async update(ctx, next) {
     try {
-      const res = await updateGoods(ctx.params.id, ctx.request.body);
+      const res = await updateGoods(ctx.params.id, ctx.request.body);      
       if (res) {
         ctx.body = {
           code: '0',
@@ -101,7 +101,8 @@ class GoodsController {
   // 获取商品列表
   async findAll(ctx, next) {
     // 1. 解析参数
-    const { pageNum = 1, pageSize = 10 } = ctx.request.body;
+    const { pageNum = 1, pageSize = 10 } = ctx.request.query;
+    console.log(`pageNum:${pageNum}, pageSize:${pageSize}`, ctx.request.query);
     // 2. 获取数据
     const res = await findGoods(pageNum, pageSize);
     if (res) {

@@ -25,9 +25,44 @@ const router = new Router({
 // 图片上传接口
 router.post('/upload', auth, hadAdminPermission, upload);
 // 发布商品接口
-router.post('/', auth, hadAdminPermission, validator, create);
+router.post('/', auth, hadAdminPermission, validator({
+  goods_name: {
+    type: 'string',
+    required: true
+  },
+  goods_price: {
+    type: 'number',
+    required: true
+  },
+  goods_num: {
+    type: 'number',
+    required: true
+  },
+  goods_img: {
+    type: 'string',
+    required: true
+  },
+}), create);
 // 商品信息修改
-router.put('/update/:id', auth, hadAdminPermission, validator, update)
+router.put('/update/:id', auth, hadAdminPermission, 
+validator({
+  goods_name: {
+    type: 'string',
+    required: false
+  },
+  goods_price: {
+    type: 'number',
+    required: false
+  },
+  goods_num: {
+    type: 'number',
+    required: false
+  },
+  goods_img: {
+    type: 'string',
+    required: false
+  },
+}), update)
 
 // 商品删除
 // router.delete('/delete/:id', auth, hadAdminPermission, remove);

@@ -1,3 +1,6 @@
+const {
+  Op
+} = require('sequelize');
 const Goods = require('../model/goods.model.js');
 class GoodsService {
   // 创建商品记录
@@ -8,26 +11,41 @@ class GoodsService {
   // 查询某条商品记录
   async findGoodById(id) {
     // 这里不包含被软删除的数据
-    const res = await Goods.findOne({ where: { id } });
+    const res = await Goods.findOne({
+      where: {
+        id
+      }
+    });
     return res ? res.dataValues : null;
   }
 
   // 更新商品数据
   async updateGoods(id, goods) {
-    const res = await Goods.update(goods, { where: { id } });
-    console.log(res, "ressssssss");
+    const res = await Goods.update(goods, {
+      where: {
+        id
+      }
+    });
     return res[0] > 0 ? true : false;
   }
 
-  // 删除商品
+  // 下架商品
   async removeGoods(id) {
-    const res = await Goods.destroy({ where: { id } });
+    const res = await Goods.destroy({
+      where: {
+        id
+      }
+    });
     return res > 0 ? true : false;
   }
 
   // 商品上架
   async restoreGoods(id) {
-    const res = await Goods.restore({ where: { id } });
+    const res = await Goods.restore({
+      where: {
+        id
+      }
+    });
     return res > 0 ? true : false;
   }
 
@@ -39,15 +57,21 @@ class GoodsService {
     // // 偏移量
     const offset = (pageNum - 1) * pageSize;
     // const rows = await Goods.findAll({ offset, limit: pageSize * 1, attributes: ['id', 'goods_name', 'goods_price', 'goods_num', 'goods_img'] });
-    const { count, rows } = await Goods.findAndCountAll({
+    // 这里count返回的是所有数据条数，不是分页后返回的条数
+    const {
+      count,
+      rows
+    } = await Goods.findAndCountAll({
       offset,
       limit: pageSize * 1,
       attributes: ['id', 'goods_name', 'goods_price', 'goods_num', 'goods_img']
-    })
+
+    });
+    console.log(count, 'count');
     return {
       pageNum,
       pageSize,
-      total: count,
+      total: rows.length,
       list: rows
     }
   }

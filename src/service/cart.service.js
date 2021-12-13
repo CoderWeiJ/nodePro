@@ -25,15 +25,6 @@ class CartService {
                 goods_id
             });
         }
-
-
-        return {
-            id: 1,
-            user_id: 12,
-            goods_id: 1,
-            number: 4,
-            selected: true,
-        }
     }
 
     // 获取购物车列表数据 分页查询
@@ -52,11 +43,12 @@ class CartService {
         return {
             pageNum,
             pageSize,
-            total: count,
+            total: rows.length,
             list: rows
         }
     }
 
+    // 更新购物车
     async updateCarts(params) {
         const { id, number, selected } = params;
         // 根据id查找

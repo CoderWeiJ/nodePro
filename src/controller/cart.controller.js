@@ -22,6 +22,7 @@ class CartController {
     async findAll(ctx, next) {
         // 1. 解析请求参数
         const { pageNum = 1, pageSize = 10 } = ctx.request.query;
+        console.log(ctx.request.query);
         // 2. 操作数据库
         const res = await findCarts(pageNum, pageSize);
         // 3. 返回结果
