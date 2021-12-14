@@ -22,11 +22,11 @@ async function auth(ctx, next) {
   } catch (err) {
     switch (err.name) {
       case 'TokenExpiredError':
-        console.error('token已过期', err);
+        console.error('token已过期: ', err);
         return ctx.app.emit('error', TokenExpiredError, ctx);
 
       case 'JsonWebTokenError':
-        console.error('无效的token', err);
+        console.error('无效的token: ', err);
         return ctx.app.emit('error', invaildToken, ctx);
     }
   }
