@@ -24,6 +24,32 @@ class AddressService {
       }
     });
   }
+  // 删除地址
+  async removeAddress(id) {
+    return await Address.destroy({
+      where: {
+        id
+      }
+    });
+  }
+
+  // 修改默认地址
+  async setDefaultAddress(id, user_id) {
+    await Address.update({
+      is_default: false
+    }, {
+      where: {
+        user_id
+      }
+    });
+    return await Address.update({
+      is_default: true
+    }, {
+      where: {
+        id
+      }
+    });
+  }
 }
 
 module.exports = new AddressService();

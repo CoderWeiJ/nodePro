@@ -1,7 +1,9 @@
 const {
   createAddress,
   findAllAddress,
-  updateAddress
+  updateAddress,
+  removeAddress,
+  setDefaultAddress
 } = require('../service/address.service.js')
 
 class AddressController {
@@ -44,6 +46,29 @@ class AddressController {
     ctx.body = {
       code: '0',
       message: '更新地址成功',
+      result: res
+    }
+  }
+
+  // 删除地址
+  async remove(ctx, next) {
+    const id = ctx.request.params.id;
+    const res = await removeAddress(id);
+    ctx.body = {
+      code: '',
+      message: '删除地址成功',
+      result: res
+    }
+  }
+
+  // 修改默认地址
+  async setDefault(ctx, next) {
+    const id = ctx.request.params.id;
+    const user_id = ctx.state.user.id;
+    const res = await setDefaultAddress(id, user_id);
+    ctx.body = {
+      code: '',
+      message: '默认地址修改成功',
       result: res
     }
   }

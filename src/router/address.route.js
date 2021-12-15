@@ -5,7 +5,7 @@ const router = new Router({
 
 // 控制器
 const {
-  create,findAll,update
+  create,findAll,update,remove,setDefault
 } = require('../controller/address.controller.js');
 // 中间件
 const {
@@ -47,4 +47,9 @@ router.put('/:id', auth, validator({
   }
 }), update)
 
+// 删除地址
+router.delete('/:id', auth, remove);
+
+// 修改默认地址
+router.patch('/:id', auth, setDefault)
 module.exports = router;
