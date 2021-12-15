@@ -1,6 +1,7 @@
 const {
   createAddress,
-  findAllAddress
+  findAllAddress,
+  updateAddress
 } = require('../service/address.service.js')
 
 class AddressController {
@@ -33,6 +34,16 @@ class AddressController {
     ctx.body = {
       code: '0',
       message: '地址添加成功',
+      result: res
+    }
+  }
+  // 更新地址
+  async update(ctx, next) {
+    const id = ctx.request.params.id;
+    const res = await updateAddress(id, ctx.request.body);
+    ctx.body = {
+      code: '0',
+      message: '更新地址成功',
       result: res
     }
   }

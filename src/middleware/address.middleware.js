@@ -3,6 +3,7 @@ const {
 } = require('../constant/err.type.js');
 
 
+// 参数校验
 function validator(rules) { // ctx, next
   return async function (ctx, next) {
     try {
@@ -15,6 +16,7 @@ function validator(rules) { // ctx, next
     await next();
   }
 }
+
 
 module.exports = {
   validator,

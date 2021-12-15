@@ -5,7 +5,7 @@ const router = new Router({
 
 // 控制器
 const {
-  create,findAll
+  create,findAll,update
 } = require('../controller/address.controller.js');
 // 中间件
 const {
@@ -29,5 +29,22 @@ router.post('/', auth, validator({
 
 // 获取地址列表
 router.get('/addressList', auth, findAll);
+
+// 更新地址
+router.put('/:id', auth, validator({
+  consignee: {
+    type: 'string',
+    required: false,
+  },
+  phone: {
+    type: 'string',
+    format: /^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/,
+    required: false
+  },
+  address: {
+    type: 'string',
+    required: false
+  }
+}), update)
 
 module.exports = router;

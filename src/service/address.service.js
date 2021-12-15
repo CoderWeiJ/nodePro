@@ -15,6 +15,15 @@ class AddressService {
       }
     });
   }
+
+  // 更新地址
+  async updateAddress(id, params) {
+    return await Address.update(params, {
+      where: {
+        id
+      }
+    });
+  }
 }
 
 module.exports = new AddressService();
