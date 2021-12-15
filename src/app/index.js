@@ -26,7 +26,7 @@ app
       uploadDir: path.join(__dirname, '../uploads'), // 上传路径
       keepExtensions: true, // 保留扩展名      
     },
-    parsedMethods: ['POST', 'PUT', 'PATCH', 'DELETE'],
+    parsedMethods: ['POST', 'PUT', 'PATCH', 'DELETE', 'GET'],
   }))
   .use(parameter(app))
   .use(KoaStatic(path.join(__dirname, '../uploads'))) // 静态资源请求路径 localhost:8000/uploads/文件名

@@ -5,7 +5,7 @@ const router = new Router({
 
 // 控制器
 const {
-  create
+  create,findAll
 } = require('../controller/address.controller.js');
 // 中间件
 const {
@@ -15,6 +15,9 @@ const {
   validator
 } = require('../middleware/address.middleware.js')
 
+// 路由编写
+
+// 添加地址
 router.post('/', auth, validator({
   consignee: 'string',
   phone: {
@@ -23,5 +26,8 @@ router.post('/', auth, validator({
   },
   address: 'string',
 }), create);
+
+// 获取地址列表
+router.get('/addressList', auth, findAll);
 
 module.exports = router;

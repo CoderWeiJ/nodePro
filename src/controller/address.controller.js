@@ -1,4 +1,7 @@
-const {createAddress} = require('../service/address.service.js')
+const {
+  createAddress,
+  findAllAddress
+} = require('../service/address.service.js')
 
 class AddressController {
   // 添加地址
@@ -15,7 +18,18 @@ class AddressController {
       phone,
       address
     });
+    ctx.body = {
+      code: '0',
+      message: '地址添加成功',
+      result: res
+    }
+  }
 
+  // 获取地址列表
+  async findAll(ctx, next) {
+    const user_id = ctx.state.user.id;
+    console.log('user_id: ', user_id);
+    const res = await findAllAddress(user_id);
     ctx.body = {
       code: '0',
       message: '地址添加成功',
