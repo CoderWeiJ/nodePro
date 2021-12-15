@@ -8,7 +8,8 @@ const router = new Router({
 // 控制器
 const {
   create,
-  findAll
+  findAll,
+  update
 } = require('../controller/order.controller.js');
 // 中间件
 const {
@@ -39,5 +40,10 @@ router.get('/:id', auth, validator({
     type: 'int',
     required: false
   }
-}), findAll)
+}), findAll);
+
+// 更新订单状态
+router.patch('/orderStatus/:id', auth, validator({
+  status: 'int'
+}), update)
 module.exports = router;

@@ -22,6 +22,17 @@ class OrderService {
       list: rows
     };
   }
+
+  // 更新订单状态
+  async updateStatus(id, status) {
+    return await Order.update({
+      status
+    }, {
+      where: {
+        id
+      }
+    });
+  }
 }
 
 module.exports = new OrderService();
