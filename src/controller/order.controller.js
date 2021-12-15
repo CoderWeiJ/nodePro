@@ -1,9 +1,10 @@
 const {
-  createOrder
+  createOrder,
+  findAllOrder
 } = require('../service/order.service.js');
 class OrderController {
+  // 生成订单
   async create(ctx, next) {
-
     // 准备数据
     const user_id = ctx.state.user.id;
     const {
@@ -25,6 +26,20 @@ class OrderController {
       result: res
     }
 
+  }
+
+  // 获取订单列表
+  async findAll(ctx, next) {
+    const user_id = ctx.state.user.id;
+    const {
+      pageNum = 1, pageSize = 10, status = 0
+    } = ctx.request.query;
+    const res = await findAllOrder(pageNum, pageSize, status);
+    ctx.body = {
+      code: '0',
+      message: '获取订单列表成功',
+      result: res
+    }
   }
 }
 
