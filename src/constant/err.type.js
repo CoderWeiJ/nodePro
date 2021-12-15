@@ -92,6 +92,14 @@ module.exports = {
   // 地址模块
   addressFormatError: {
     code: '10401',
-    message: '地址参数格式错误'
+    message: '地址参数格式错误',
+    result: ''
+  },
+
+  // 订单模块
+  orderFormatError: {
+    code: '10501',
+    message: '订单参数格式错误',
+    result: ''
   }
 }
